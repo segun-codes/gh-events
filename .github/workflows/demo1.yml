@@ -1,8 +1,20 @@
 name: Events Demo 1
 on:
   pull_request:
-    types: [opened]
+    types:
+      - opened    # this is activity type in action
+    branches:     # this is filter in action
+      - main
+      - 'dev-*'   # i.e., dev-fe, dev-be etc. Note "*" means any other words or characters but not "/""
+      - 'feat/**' # i.e., feat/new, feat/new/newers . Note "**" means any other words, characters etc including "/"
   workflow_dispatch:
+  push:
+    branches:       # first filter under event "push" in action
+      - main
+      - 'dev-*'     # i.e., dev-fe, dev-be etc. Note "*" means any other words or characters but not "/""
+      - 'feat/**'   # i.e., feat/new, feat/new/newers . Note "**" means any other words, characters etc including "/"
+    paths-ignore:   # second filter under event "push" in action. means don't trigger worker if any change occur in the specified folder
+      -  '.github/workflows/*'     
 jobs:
   deploy:
     runs-on: ubuntu-latest
